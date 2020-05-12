@@ -3,6 +3,7 @@ import {
   isWebSocketCloseEvent,
 } from "https://deno.land/std/ws/mod.ts";
 import { v4 } from "https://deno.land/std/uuid/mod.ts";
+import { camelCase } from "./deps.ts";
 
 const users = new Map<string, WebSocket>();
 
@@ -22,7 +23,7 @@ export async function chat(ws: WebSocket): Promise<void> {
 
   // Wait for new messages
   for await (const event of ws) {
-    const message = typeof event === "string" ? event : "";
+    const message = camelCase(typeof event === "string" ? event : "");
 
     broadcast(message, userId);
 
